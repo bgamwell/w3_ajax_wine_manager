@@ -39,6 +39,8 @@ $("#submit-wine").on("click", function() {
 	});
 });
 
+var wineID;
+
 //Code to fill in modal to edit a wine
 $(document).on("click", ".edit-wine-button", function(event) {
 	event.preventDefault();
@@ -59,8 +61,52 @@ $(document).on("click", ".edit-wine-button", function(event) {
 			$("#edit-wine-modal").modal("show");
 		}
 	});
+
+	wineID = $(this).data("id");
+
 });
 
 //Code to update a wine here
 
+$("#submit-edited-wine").on("click", function() {
+	var wineObj = {
+		name: $("#edit-name").val(),
+		year: $("#edit-year").val(),
+		grapes: $("#edit-grapes").val(),
+		country: $("#edit-country").val(),
+		region: $("#edit-region").val(),
+		price: $("#edit-price").val(),
+		description: $("#edit-description").val(),
+		picture: $("#edit-picture").val()
+	};
+
+	$.ajax({
+		type: "PUT",
+		url: "http://daretodiscover.herokuapp.com/wines/" + wineID,
+		data: wineObj,
+		success: function() {
+			window.location.reload();
+		},
+		error: function() {
+			alert("Error!");
+		}
+	});
+
+});
+
 //Code to delete a wine here
+
+$("#delete-wine").on("click", function() {
+
+	$.ajax({
+		type: "DELETE",
+		url: "http://daretodiscover.herokuapp.com/wines/" + wineID,
+		success: function() {
+			window.location.reload();
+		},
+		error: function() {
+			alert("Error!");
+		}
+	});
+
+});
